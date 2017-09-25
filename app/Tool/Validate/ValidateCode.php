@@ -25,7 +25,7 @@ class ValidateCode
 
     public function __construct()
     {
-        $this->font = '/font/Chowderhead.ttf';
+        $this->font = './font/Chowderhead.ttf';
         $this->img = imagecreatetruecolor($this->width, $this->heigh);
     }
 

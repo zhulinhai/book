@@ -15,12 +15,9 @@ Route::get('/', function () {
     return view('login');
 });
 
-Route::get('/login', function () {
-    return view('login');
-});
+Route::get('/login', 'View\MemberController@toLogin');
 
-Route::get('/register', function () {
-    return view('register');
-});
+Route::get('/register', 'View\MemberController@toRegister');
 
-Route::any('service/validate_code/create', 'Service\ValidateCodeController@create');
+Route::any('service/validate_code/create', 'Service\ValidateController@create');
+Route::any('service/validate_phone/send', 'Service\ValidateController@sendSMS');
