@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-//*http://www.maiziedu.com/course/649-9643/*/
 
 <html lang="en">
 <head>
@@ -11,7 +10,66 @@
 </head>
 <body>
 @yield('content')
+
+<div id="global_menu" onclick="onMenuClick();">
+    <div></div>
+</div>
+
+<!-- BEGIN actionSheet -->
+<div id="actionSheet_wrap" style="display: none">
+    <div class="weui-mask" id="mask"></div>
+    <div class="weui-actionsheet" id="weui_actionsheet">
+        <div class="weui-actionsheet__menu">
+            <div class="weui-actionsheet__cell" onclick="onMenuItemClick(1)">用户中心</div>
+            <div class="weui-actionsheet__cell" onclick="onMenuItemClick(2)">选择套餐</div>
+            <div class="weui-actionsheet__cell" onclick="onMenuItemClick(3)">周边油站</div>
+            <div class="weui-actionsheet__cell" onclick="onMenuItemClick(4)">常见问题</div>
+        </div>
+        <div class="weui-actionsheet__action">
+            <div class="weui-actionsheet__cell" id="iosActionsheetCancel">取消</div>
+        </div>
+    </div>
+</div>
+
 </body>
 <script src="./js/jquery-1.10.1.min.js"></script>
+<script type="text/javascript">
+
+    function hideActionsheet(weuiActionsheet, mask) {
+        weuiActionsheet.removeClass('weui_actionsheet_toggle');
+        mask.removeClass('weui_fade_toggle');
+        weuiActionsheet.on('transitionend', function () {
+            mask.hide();
+        }).on('webkitTransitionEnd', function () {
+            mask.hide();
+        });
+
+        $('#actionSheet_cancel').click(function(){
+           hideActionSheet(weuiActionSheet, mask);
+        });
+        weuiActionsheet.unbind('transitionend').unbind('webkitTransitionEnd');
+    }
+
+    function onMenuItemClick(index) {
+        var mask = $('#mask');
+        var weuiActionsheet = $('#weui_actionsheet');
+        hideActionSheet(weuiActionsheet, mask);
+        if (index == 1) {
+
+        } else if (index == 2) {
+
+        } else if (index == 3) {
+
+        } else {
+            $('.bk_toptips').show();
+            $('.bk_toptips span').html('敬请期待!');
+            setTimeout(function () {
+                $('.bk_toptips').hide();
+            }, 2000);
+        }
+    }
+
+</script>
+
 @yield('my-js')
 </html>
