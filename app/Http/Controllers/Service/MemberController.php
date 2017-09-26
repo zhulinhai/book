@@ -11,7 +11,7 @@ use App\Entity\TempPhone;
 use App\Entity\TempEmail;
 use App\Models\M3Email;
 use App\Tool\UUID;
-use Mail;
+use Illuminate\Support\Facades\Mail;
 
 class MemberController extends Controller
 {
@@ -77,7 +77,7 @@ class MemberController extends Controller
                 return $m3_result->toJson();
             }
 
-            // 邮箱注册
+        // 邮箱注册
         } else {
             if($validate_code == '' || strlen($validate_code) != 4) {
                 $m3_result->status = 6;
@@ -101,9 +101,9 @@ class MemberController extends Controller
 
             $m3_email = new M3Email;
             $m3_email->to = $email;
-            $m3_email->cc = 'magina@speakez.cn';
+            $m3_email->cc = 'zhulinhai@geek720.com';
             $m3_email->subject = '凯恩书店验证';
-            $m3_email->content = '请于24小时点击该链接完成验证. http://book.magina.com/service/validate_email'
+            $m3_email->content = '请于24小时点击该链接完成验证. http://127.0.0.1:8000/service/validate_email'
                 . '?member_id=' . $member->id
                 . '&code=' . $uuid;
 

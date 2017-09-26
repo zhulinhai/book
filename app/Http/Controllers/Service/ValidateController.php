@@ -16,8 +16,9 @@ class ValidateController extends Controller
     public function create(Request $request)
     {
         $validateCode = new ValidateCode;
+        $img = $validateCode->doimg();
         $request->session()->put('validate_code', $validateCode->getCode());
-        return $validateCode->doimg();
+        return $img;
     }
 
     public function sendSMS(Request $request)

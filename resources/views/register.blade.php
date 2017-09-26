@@ -74,7 +74,7 @@
                     <label class="weui-label">密码</label>
                 </div>
                 <div class="weui-cell__bd weui_cell__primary">
-                    <input class="weui-input" type="tel" placeholder="不少于6位" name="passwd_email" />
+                    <input class="weui-input" type="password" placeholder="不少于6位" name="passwd_email" />
                 </div>
             </div>
             <div class="weui-cell">
@@ -82,13 +82,13 @@
                     <label class="weui-label">确认密码</label>
                 </div>
                 <div class="weui-cell__bd weui_cell__primary">
-                    <input class="weui-input" type="tel" placeholder="不少于6位" name="passwd_email_cfm" />
+                    <input class="weui-input" type="password" placeholder="不少于6位" name="passwd_email_cfm" />
                 </div>
             </div>
             <div class="weui-cell weui-cell_vcode">
                 <div class="weui-cell__hd"><label class="weui-label">验证码</label></div>
                 <div class="weui-cell__bd">
-                    <input class="weui-input" type="number" placeholder="请输入验证码" name="validate_code" />
+                    <input class="weui-input" type="text" placeholder="请输入验证码" name="validate_code" />
                 </div>
                 <div class="weui-cell__ft">
                     <img class="bk_validate_code" src="/service/validate_code/create" />
@@ -106,14 +106,16 @@
 
 @section('my-js')
     <script type="text/javascript">
-
+        var registerType = 0;
         $('input:radio[name=register_type]').click(function () {
             var id = $(this).attr('id');
             var $cellForm = $('.weui-cells_form');
             if (id === 'x11') {
+                registerType = 0;
                 $cellForm.eq(0).show();
                 $cellForm.eq(1).hide();
             } else if (id === 'x12' ) {
+                registerType = 1;
                 $cellForm.eq(1).show();
                 $cellForm.eq(0).hide();
             }
@@ -188,59 +190,52 @@
     <script type="text/javascript">
 
         function onRegisterClick() {
+            var email = '';
+            var phone = '';
+            var password = '';
+            var confirm = '';
+            var phone_code = '';
+            var validate_code = '';
+            if (registerType == 0) {
+                phone = $('input[name=phone]').val();
+                password = $('input[name=passwd_phone]').val();
+                confirm = $('input[name=passwd_phone_cfm]').val();
+                phone_code = $('input[name=phone_code]').val();
+                if(verifyPhone(phone, password, confirm, phone_code) == false) {
+                    return;
+                }
+            } else {
+                email = $('input[name=email]').val();
+                password = $('input[name=passwd_email]').val();
+                confirm = $('input[name=passwd_email_cfm]').val();
+                validate_code = $('input[name=validate_code]').val();
+                if(verifyEmail(email, password, confirm, validate_code) == false) {
+                    return;
+                }
+            }
 
-            $('input:radio[name=register_type]').each(function(index, el) {
-                if($(this).attr('checked') == 'checked') {
-                    var email = '';
-                    var phone = '';
-                    var password = '';
-                    var confirm = '';
-                    var phone_code = '';
-                    var validate_code = '';
-
-                    var id = $(this).attr('id');
-                    if(id == 'x11') {
-                        phone = $('input[name=phone]').val();
-                        password = $('input[name=passwd_phone]').val();
-                        confirm = $('input[name=passwd_phone_cfm]').val();
-                        phone_code = $('input[name=phone_code]').val();
-                        if(verifyPhone(phone, password, confirm, phone_code) == false) {
-                            return;
-                        }
-                    } else if(id == 'x12') {
-                        email = $('input[name=email]').val();
-                        password = $('input[name=passwd_email]').val();
-                        confirm = $('input[name=passwd_email_cfm]').val();
-                        validate_code = $('input[name=validate_code]').val();
-                        if(verifyEmail(email, password, confirm, validate_code) == false) {
-                            return;
-                        }
+            $.ajax({
+                type: 'POST',
+                url: '/service/register',
+                dataType: 'json',
+                cache: false,
+                data: {phone: phone, email: email, password: password, confirm: confirm,
+                    phone_code: phone_code, validate_code: validate_code, _token: "{{csrf_token()}}"},
+                success: function(data) {
+                    if(data == null) {
+                        showTopTips('服务端错误');
+                        return;
                     }
-
-                    $.ajax({
-                        type: 'POST',
-                        url: '/service/register',
-                        dataType: 'json',
-                        cache: false,
-                        data: {phone: phone, email: email, password: password, confirm: confirm,
-                            phone_code: phone_code, validate_code: validate_code, _token: "{{csrf_token()}}"},
-                        success: function(data) {
-                            if(data == null) {
-                                showTopTips('服务端错误');
-                                return;
-                            }
-                            if(data.status != 0) {
-                                showTopTips(data.message);
-                                return;
-                            }
-                            showTopTips('注册成功');
-                        },
-                        error: function(xhr, status, error) {
-                            console.log(xhr);
-                            console.log(status);
-                            console.log(error);
-                        }
-                    });
+                    if(data.status != 0) {
+                        showTopTips(data.message);
+                        return;
+                    }
+                    showTopTips('注册成功');
+                },
+                error: function(xhr, status, error) {
+                    console.log(xhr);
+                    console.log(status);
+                    console.log(error);
                 }
             });
         }
