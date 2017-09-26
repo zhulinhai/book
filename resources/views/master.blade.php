@@ -9,7 +9,13 @@
     <link rel="stylesheet" href="./css/book.css">
 </head>
 <body>
-@yield('content')
+
+<div class="page">
+    @yield('content')
+</div>
+
+<!-- tooltips -->
+<div class="bk_toptips"><span></span></div>
 
 <div id="global_menu" onclick="onMenuClick();">
     <div></div>
@@ -61,12 +67,16 @@
         } else if (index == 3) {
 
         } else {
-            $('.bk_toptips').show();
-            $('.bk_toptips span').html('敬请期待!');
-            setTimeout(function () {
-                $('.bk_toptips').hide();
-            }, 2000);
+            showTopTips('敬请期待!');
         }
+    }
+    
+    function showTopTips(msg) {
+        $('.bk_toptips').show();
+        $('.bk_toptips span').html(msg);
+        setTimeout(function () {
+            $('.bk_toptips').hide();
+        }, 2000);
     }
 
 </script>
