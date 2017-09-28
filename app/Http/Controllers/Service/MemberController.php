@@ -101,7 +101,7 @@ class MemberController extends Controller
 
             $m3_email = new M3Email;
             $m3_email->to = $email;
-            $m3_email->cc = 'zhulinhai@geek720.com';
+            $m3_email->cc = '';
             $m3_email->subject = '凯恩书店验证';
             $m3_email->content = '请于24小时点击该链接完成验证. http://127.0.0.1:8000/service/validate_email'
                 . '?member_id=' . $member->id
@@ -113,17 +113,56 @@ class MemberController extends Controller
             $tempEmail->deadline = date('Y-m-d H-i-s', time() + 24*60*60);
             $tempEmail->save();
 
-            Mail::send('email_register', ['m3_email' => $m3_email], function ($m) use ($m3_email) {
-                // $m->from('hello@app.com', 'Your Application');
-                $m->to($m3_email->to, '尊敬的用户')
-                    ->cc($m3_email->cc)
-                    ->subject($m3_email->subject);
-            });
+//            Mail::send('email_register', ['m3_email' => $m3_email], function ($m) use ($m3_email) {
+//                $m->to($m3_email->to, '尊敬的用户')
+//                    ->cc($m3_email->cc)
+//                    ->subject($m3_email->subject);
+//            });
+
             $m3_result->status = 0;
             $m3_result->message = '注册成功';
             return $m3_result->toJson();
         }
 
+    }
+
+    public function login(Request $request) {
+        $username = $request->get('username','');
+        $password = $request->get('password','');
+        $validate_code = $request->get('validate_code','');
+
+        $m3_result = new M3Result;
+        // 校验
+
+        // 判断
+        $validate_code_session = $request->session()->get('validate_code');
+        if ($validate_code != $validate_code_session) {
+            $m3_result->status = 1;
+            $m3_result->message = '验证码不正确';
+            return $m3_result->toJson();
+        }
+
+        $member = null;
+        if (strpos($username, '@') == true) {
+            $member = Member::where('email', $username)->first();
+        } else {
+            $member = Member::where('phone', $username)->first();
+        }
+        if ($member == null) {
+            $m3_result->status = 2;
+            $m3_result->message = '该用户不存在';
+            return $m3_result->toJson();
+        } else {
+            if (md5('bk' + $password) != $member->password) {
+                $m3_result->status = 3;
+                $m3_result->message = '密码不正确';
+                return $m3_result->toJson();
+            }
+        }
+        $request->session()->put('member', $member);
+        $m3_result->status = 0;
+        $m3_result->message = '登录成功';
+        return $m3_result->toJson();
     }
 
 }

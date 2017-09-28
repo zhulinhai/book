@@ -150,14 +150,14 @@
             var num = 60;
             var that = this;
             var interval = window.setInterval(function () {
-                that.html(--num + 's 重新发送');
+                $(that).html(--num + 's 重新发送');
                 if (num == 0) {
                     enable = true;
                     window.clearInterval(interval);
                     interval = -1;
-                    that.addClass('bk_important');
-                    that.removeClass('bk_summary');
-                    that.html('重新发送');
+                    $(that).addClass('bk_important');
+                    $(that).removeClass('bk_summary');
+                    $(that).html('重新发送');
                 }
 
             }, 1000);
