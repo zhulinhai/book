@@ -9,6 +9,11 @@
     <link rel="stylesheet" href="./css/book.css">
 </head>
 <body>
+<div class="bk_title_bar">
+    <img class="bk_back" src="./images/back.png" alt="" onclick="history.go(-1);">
+    <p class="bk_title_content"></p>
+    <img class="bk_menu" src="./images/more.png" alt="" onclick="onMenuClick();">
+</div>
 
 <div class="page">
     @yield('content')
@@ -22,9 +27,9 @@
 </div>
 
 <!-- BEGIN actionSheet -->
-<div id="actionSheet_wrap" style="display: none">
-    <div class="weui-mask" id="mask"></div>
-    <div class="weui-actionsheet" id="weui_actionsheet">
+<div id="actionSheet_wrap">
+    <div class="weui-mask" id="mask" style="display: none"></div>
+    <div class="weui-actionsheet" id="weui_actionsheet" style="display: none">
         <div class="weui-actionsheet__menu">
             <div class="weui-actionsheet__cell" onclick="onMenuItemClick(1)">用户中心</div>
             <div class="weui-actionsheet__cell" onclick="onMenuItemClick(2)">选择套餐</div>
@@ -41,7 +46,7 @@
 <script src="./js/jquery-1.10.1.min.js"></script>
 <script type="text/javascript">
 
-    function hideActionsheet(weuiActionsheet, mask) {
+    function hideActionSheet(weuiActionsheet, mask) {
         weuiActionsheet.removeClass('weui_actionsheet_toggle');
         mask.removeClass('weui_fade_toggle');
         weuiActionsheet.on('transitionend', function () {
@@ -56,6 +61,18 @@
         weuiActionsheet.unbind('transitionend').unbind('webkitTransitionEnd');
     }
 
+    function onMenuClick () {
+        var mask = $('#mask');
+        var weuiActionsheet = $('#weui_actionsheet');
+        weuiActionsheet.addClass('weui_actionsheet_toggle');
+        mask.show().addClass('weui_fade_toggle').click(function () {
+            hideActionSheet(weuiActionsheet, mask);
+        });
+        $('#actionsheet_cancel').click(function () {
+            hideActionSheet(weuiActionsheet, mask);
+        });
+        weuiActionsheet.unbind('transitionend').unbind('webkitTransitionEnd');
+    }
     function onMenuItemClick(index) {
         var mask = $('#mask');
         var weuiActionsheet = $('#weui_actionsheet');
@@ -79,6 +96,7 @@
         }, 2000);
     }
 
+    $('.bk_title_content').html(document.title);
 </script>
 
 @yield('my-js')

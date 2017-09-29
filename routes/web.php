@@ -18,10 +18,14 @@ Route::get('/', function () {
 Route::get('/login', 'View\MemberController@toLogin');
 Route::get('/register', 'View\MemberController@toRegister');
 
+Route::get('/category', function (){
+    return view('category');
+});
+
 Route::group(['prefix' => 'service'], function () {
-    Route::any('/validate_code/create', 'Service\ValidateController@create');
-    Route::any('/validate_phone/send', 'Service\ValidateController@sendSMS');
-    Route::any('/validate_email', 'Service\ValidateController@validateEmail');
-    Route::POST('/register', 'Service\MemberController@register');
-    Route::POST('/login', 'Service\MemberController@login');
+    Route::get('/validate_code/create', 'Service\ValidateController@create');
+    Route::post('/validate_phone/send', 'Service\ValidateController@sendSMS');
+    Route::post('/validate_email', 'Service\ValidateController@validateEmail');
+    Route::post('/register', 'Service\MemberController@register');
+    Route::post('/login', 'Service\MemberController@login');
 });

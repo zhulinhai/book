@@ -98,7 +98,7 @@
                         showTopTips(data.message);
                         return;
                     }
-                    showTopTips('注册成功');
+                    showTopTips('登录成功');
 
                     location.href = '/category';
                 },
