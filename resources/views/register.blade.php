@@ -232,6 +232,8 @@
                         return;
                     }
                     showTopTips('注册成功');
+
+                    window.location.href = '/login';
                 },
                 error: function(xhr, status, error) {
                     console.log(xhr);

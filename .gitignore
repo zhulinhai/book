@@ -12,3 +12,4 @@ yarn-error.log
 .env
 /public/weui
 log.txt
+/weui

@@ -100,7 +100,8 @@
                     }
                     showTopTips('登录成功');
 
-                    location.href = '/category';
+                    var return_url = "{!! $return_url !!}";
+                    location.href = return_url==''?'/category':return_url;
                 },
                 error: function(xhr, status, error) {
                     console.log(xhr);

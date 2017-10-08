@@ -62,3 +62,19 @@ response body = <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
     </TemplateSMS>
 </Response>
 
+request body = <TemplateSMS>
+                    <to>18519002237</to>
+                    <appId>8a48b5514cbc7ffc014cbd31be550062</appId>
+                    <templateId>1</templateId>
+                    <datas><data>341911</data><data>60</data></datas>
+                  </TemplateSMS>
+request url = https://app.cloopen.com:8883/2013-12-26/Accounts/8a48b5514cbc4149014cbc42e1900000/SMS/TemplateSMS?sig=B8E128DE92BAA10222C803295E06D907
+response body = <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Response>
+    <statusCode>000000</statusCode>
+    <TemplateSMS>
+        <smsMessageSid>39d82146c4514647925af1756676a4ad</smsMessageSid>
+        <dateCreated>20171006212344</dateCreated>
+    </TemplateSMS>
+</Response>
+
